@@ -25,7 +25,7 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
-MAX_DECEL = 0.5 #
+MAX_DECEL = 0.8 #
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -150,7 +150,11 @@ class WaypointUpdater(object):
         farthest_idx = closest_idx + LOOKAHEAD_WPS
         # create a set of waypoints from current position to lookahead position
         lane.waypoints = self.base_waypoints.waypoints[closest_idx:farthest_idx]
-        print ("Stopline index: {}".format(self.stopline_wp_idx))
+        #print ("Stopline index: {}".format(self.stopline_wp_idx))
+        current_velocity = self.base_waypoints.waypoints[closest_idx].twist.twist.linear.x
+
+
+        #print ("waypoints Velocity: {}".format(current_velocity))
 
         # if there is no trafifc light information or too far away
         if ((self.stopline_wp_idx == -1) or (self.stopline_wp_idx >= farthest_idx)):

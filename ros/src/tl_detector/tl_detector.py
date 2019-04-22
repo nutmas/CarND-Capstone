@@ -85,14 +85,14 @@ class TLDetector(object):
             # for i in (waypoints.waypoints):
             # print waypoints.waypoints.pose.position.x
 
-            print "traffic light waypoint tree list:"
-            print self.waypoint_tree.data
+            #print "traffic light waypoint tree list:"
+            #print self.waypoint_tree.data
 
-            ptsTofind = np.array([909.5, 1128])
+            #ptsTofind = np.array([909.5, 1128])
 
-            result = self.waypoint_tree.query(ptsTofind, 1)[1]
-            print "traffic light result:::: "
-            print result
+            #result = self.waypoint_tree.query(ptsTofind, 1)[1]
+            #print "traffic light result:::: "
+            #print result
 
 
         pass
