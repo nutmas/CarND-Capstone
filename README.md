@@ -149,7 +149,8 @@ To take this end-to-end classifier forwards it would need retraining on the real
 
 ## Results<a id="sec-7"></a>
 
-This repo shows the Tensorflow classifier implementation. This has not been classified for real world traffic lights. This model will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end Classifier. The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva
+This repo shows the Tensorflow traffic light classifier implementation. This has model not been trained for real world traffic lights; It will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end traffic light Classifier.  
+The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva
 
 **This [Video](https://www.youtube.com/watch?v=HVy0eSQZLXA) shows the end-to-end net in operation while the vehicle navigates around the simulator track.**
 
