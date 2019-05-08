@@ -87,7 +87,7 @@
 <li>Clone this repository into the project_udacity directory. <code>https://github.com/nutmas/CarND-Capstone.git</code></li>
 <li>Install python dependencies. <code>cd CarND-Capstone-Project\</code> and <code>pip install -r requirements.txt</code> will install dependencies.</li>
 <li>Build code. <code>cd ros\</code> and <code>catkin_make</code> and <code>source devel/setup.sh</code></li>
-<li>Create a directory for simulator <code>cd</code> and 'mkdir Sim<code>and</code>cd Sim`</li>
+<li>Create a directory for simulator <code>cd</code> and <code>mkdir Sim</code> and <code>cd Sim</code></li>
 <li>Download Simulator from here: <a href="https://github.com/udacity/CarND-Capstone/releases">Udacity Simulator</a></li>
 <li>Run the simulator <code>cd linux_sys_int</code> and <code>./sys_int.x86_64</code> (for linux 64bit system)</li>
 </ol>
@@ -103,14 +103,14 @@
 <p class="caption">alt text</p>
 </div>
 <ol start="9" style="list-style-type: decimal">
-<li>Clicking the <code>Camera</code> checkbox in the simulator will ready the car for autonomous mode. The green planned path with appear.</li>
+<li>Clicking the <code>Camera</code> checkbox will ready the car for autonomous mode. A green planned path appears.</li>
 </ol>
 <div class="figure">
 <img src="./support/FullyRunning.png" title="Fully Running" alt="alt text" />
 <p class="caption">alt text</p>
 </div>
 <ol start="10" style="list-style-type: decimal">
-<li>Now the vehicle is ready to drive autonomously arouynd the track. Click the <code>Manual</code> checkbox and the vehicle will start to drive.</li>
+<li>Now the vehicle is ready to drive autonomously around the track. Click the <code>Manual</code> checkbox and the vehicle will start to drive.</li>
 </ol>
 <h2 id="traffic-light-detection-and-classification-end-to-end-approach-using-tensorflow">Traffic Light Detection and Classification End-to-End Approach using Tensorflow<a id="sec-6"></a></h2>
 <h4 id="development-overview">Development Overview<a id="sec-6-1"></a></h4>
@@ -160,7 +160,8 @@
 <h4 id="pid-tuning-parameters">PID Tuning Parameters<a id="sec-6-3"></a></h4>
 <p><strong>The final values of PID controller for end-to-end Tensorflow model were the following: (KP = 0.25, KI = 0.0, KD = 0.15, MN = 0.0, MX = 0.5).</strong></p>
 <h2 id="results">Results<a id="sec-7"></a></h2>
-<p>This repo shows the Tensorflow classifier implementation. This has not been classified for real world traffic lights. This model will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end Classifier. The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva</p>
+<p>This repo shows the Tensorflow traffic light classifier implementation. This has model not been trained for real world traffic lights; It will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end traffic light Classifier.<br />
+The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva</p>
 <p><strong>This <a href="https://www.youtube.com/watch?v=HVy0eSQZLXA">Video</a> shows the end-to-end net in operation while the vehicle navigates around the simulator track.</strong></p>
 <h2 id="license">License<a id="sec-8"></a></h2>
 <p>For License information please see the <a href="./LICENSE">LICENSE</a> file for details</p>

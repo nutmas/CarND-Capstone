@@ -76,7 +76,7 @@ From this diagram the ROS topics can be seen communicating between the ROS nodes
 2. Clone this repository into the project_udacity directory. `https://github.com/nutmas/CarND-Capstone.git`
 3. Install python dependencies. `cd CarND-Capstone-Project\` and `pip install -r requirements.txt` will install dependencies.
 4. Build code. `cd ros\` and `catkin_make` and `source devel/setup.sh`
-5. Create a directory for simulator `cd` and 'mkdir Sim` and `cd Sim`
+5. Create a directory for simulator `cd` and `mkdir Sim` and `cd Sim`
 6. Download Simulator from here: [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases)
 7. Run the simulator `cd linux_sys_int` and `./sys_int.x86_64` (for linux 64bit system)
 
