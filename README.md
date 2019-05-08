@@ -125,7 +125,7 @@ A lot of the control and waypoint following for our self-driving car was re-used
 
 * Updated the waypoint updater `decelerate_waypoints()` function so that it accepted the stop waypoint index as an argument. This prevented the waypoint node from crashing randomly due to an edge case where the code passed the `stop_wp_idx_temp >= farthest_idx` check in generate lane and then received a /traffic_waypoint update in the middle of calculating the deceleration waypoints resulting in an out of bounds exception at the worst. At the best it resulted in decelerion waypoints calculated using multiple stop locations.
 
-* Updated the twist controller steering PID parameters to improve performance around the curves. The final values of were the following (KP = 0.5, KI = 0.0007, KD = 0.1, MN = 0.0, MX = 0.5).
+* Updated the twist controller steering PID parameters to improve performance around the curves. **The final values of PID controller for end-to-end Tensorflow model were the following: (KP = 0.25, KI = 0.0, KD = 0.15, MN = 0.0, MX = 0.5).**
 
 * Updated the total vehicle mass calculation in the twist controller to include the mass contributed by the current fuel levels. While this was impossible to test in simulation it should help provide more accurate braking torques when decelerating the vehicle on the track.
 

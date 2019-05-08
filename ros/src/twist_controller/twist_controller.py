@@ -25,9 +25,9 @@ class Controller(object):
         self.last_time = rospy.get_time()
 
 
-        kp = 0.5
-        ki = 0.0007
-        kd = 0.1
+        kp = 0.25
+        ki = 0.0
+        kd = 0.15
         mn = 0. # minimum throttle value
         mx = 0.5 # maximum throttle value
         self.throttle_controller = PID(kp, ki, kd, mn, mx)
