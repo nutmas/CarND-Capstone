@@ -87,7 +87,7 @@ From this diagram the ROS topics can be seen communicating between the ROS nodes
 
 ![alt text][image3]
 
-9. Clicking the `Camera` checkbox in the simulator will ready the car for autonomous mode. The green planned path with appear.
+9. Clicking the `Camera` checkbox in the simulator will ready the car for autonomous mode. A green planned path appears.
 
 ![alt text][image4]
 
