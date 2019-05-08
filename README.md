@@ -1,8 +1,33 @@
-# Programming a Real Self Driving Car
-The goal of the final Udacity Capstone project was to program a real self driving car using ROS. Much of the developement of the car was done the Udacity Simulator, but the final goal of the project was to run the code in real life on Carla, Udacity's self-driving car.
+# CarND-Capstone-Project
+## Programming a Real Self Driving Car
 
-## Meet Team AutoWheels
-Team AutoWheels has five memembers. Below are their names, email addresses and slack handles.
+---
+
+[//]: # (Image References)
+
+[image1]: ./support/structure.png "Program Structure"
+[image2]: ./support/SimulatorStartUp.png "Simulator Welcome"
+[image3]: ./support/SimlatorStarted.png "Simulator Running"
+[image4]: ./support/FullyRunning.png "Fully Running"
+
+
+- [Team: Autowheels](#sec-1)
+- [Overview](#sec-2)
+- [System Architecture](#sec-3)
+- [Installation steps](#sec-4)
+- [Usage](#sec-5)
+- [Traffic Light Detection and Classification End-to-End Approach using Tensorflow](#sec-6)
+  - [Development Overview](#sec-6-1)
+  - [Performance Evaluation](#sec-6-2)
+  - [PID Tuning Parameters](#sec-6-3)
+- [Results](#sec-7)
+- [License](#sec-8)
+
+---
+
+## Meet Team AutoWheels<a id="sec-1"></a>
+Team AutoWheels has five members. Below are their names, email addresses and slack handles.
+
 
 Team Member Name | Email Address | Slack Handle 
 ------------ | ------------- | -------------
@@ -10,68 +35,68 @@ Diogo Silva (Team Lead) | akins.daos+selfdriving@gmail.com | @diogoaos
 Volker van Aken | volker.van.aken@gmail.com | @Volker
 Andreea Patachi | patachiandreea@yahoo.com | @Andreea	
 Stephen Nutman | stephen_nutman@outlook.com | @Steve
-Alexander Meade | alexander.n.meade@gmail.com | @ameade 
+Alexander Meade | alexander.n.meade@gmail.com | @ameade
 
-**This repo shows the Tensorflow classifier implementation. This has not been classified for real world traffic lights. This model will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end Classifier. The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva**
+## Overview<a id="sec-2"></a>
 
-## Traffic Light Detection and Classification
+This is the final project in the Udacity Self Driving Car NanoDegree course. The task of this Capstone project was to create ROS nodes to implement core functionality of an autonomous vehicle system, including traffic light detection, vehicle control and waypoint path following. The development uses a simulator to support in evaluating the code performance. Once ready to run there was an opportunity to run the code on a real car - the Udacity AD vehicle Carla.
 
-The first approach was to use a off-the-shelf detector (YOLO) to detect the bounding boxes of traffic lights.
-The simulator detections for the YOLO bounding boxes were very good.
-We had hoped to combine these detections with a simple OpenCV approach to light classifications.
-This end to end system worked very well in simulation, but not on track data.
-The off-the-shelf YOLO detection on the track data (from provided ROS bag) was poor.
-The OpenCV approach had an even more difficult time with the real track data due to the bright lighting conditions.
-We decided it would be better and more reliable to learn a model to classify the light colors rather than try to account for the brightness differences in OpenCV.
-It was clear that we would need to train a detector and classifier with both simulation and real track data.
-Along these lines we had two distinct approaches: 
+## System Architecture Diagram<a id="sec-3"></a>
 
-1. The YOLO object detection system, pre-trained on the COCO dataset with 80 classes, including traffic lights.
-2. Use a pre-trained model using the Tensorflow framework and expand it to not only detect traffic lights but also classify their state.
+The following system diagram shows the architecture of the code that was implemented. The architecture is split into 3 main areas:
 
-Although both approaches were explored and developed, the YOLO system was used for the final solution.
+- Perception (Traffic Light Detection)
+- Planning (Waypoint Following)
+- Control (Vehicle longitudinal and lateral control)
 
-### Annotating data
-For the simulator data we used the off-the-shelf YOLO detections of traffic lights along and the OpenCV classifier to compile a training dataset. We manually exammined this training set correcting any false positives or bad labels. For generating a training set from track data, we manually annotated the images using [LabelImg](https://github.com/tzutalin/labelImg) and [Yolo_mark](https://github.com/AlexeyAB/Yolo_mark).
+From this diagram the ROS topics can be seen communicating between the ROS nodes. Information is also passed on these topics to the Car simulator.
 
-### OpenCV
-The OpenCV approach included in tl_classifier.py further cropped and resized the input images and converted them from BRG to HSV. The V componenet of the image was binary thresholded and the image was split into top, middle and bottom components corresponding to the red, yellow and green lights. The section with the largest greater than zero count determined the light color. This was inspired by the reference [blog](https://qtmbits.com/traffic-light-classifier-using-python-and-opencv/) included below. We also tried experiementing with Hough circles in OpenCV, but the results were not consistent in that a circle was not always detected.
 
-### YOLOv3 and darknet_ros
-#### YOLOv3
-YOLO (You Only Look Once) is known to be a fast algorithm for object detection.
-YOLOv2 improved on the original algorithm by being faster and more accurate.
-YOLOv3 sacrificed speed for better accuracy.
-While slower, the authors report 30 FPS in a Titan X, similar to the GPU installed in CARLA.
-Furthermore, 30FPS is a processing speed higher then the publish frequency for the image feed in both the simulator and provided ROS bags.
-Thus YOLOv3, pretrained on COCO dataset, was a good fit for this project.
-Furthermore, a ROS package (_darknet_ros_) that made YOLO easily available in the the environment was available, which also sped up development.
+![alt text][image1]
 
-YOLOv3 is built on a 53 layer network trained on imagenet (_darknet-53_), on top of which 53 more layers are added for object detection.
-Contrary to its predecessor, YOLOv3 uses both skip connections and upsampling layers, resulting in a fully convolutional model.
-Detection is done at 3 different places in the network, using features at different scales.
-This feature of the model helps with detection of small objects.
 
-A full architecture of the underlying model can be observed in the image below.
+## Installation steps<a id="sec-4"></a>
 
-![YOLOv3 underlying architecture diagram](yolov3.png)
-YOLOv3 underlying architecture (taken from [here](https://towardsdatascience.com/yolo-v3-object-detection-53fb7d3bfe6b)).
-#### darknet_ros and tl_detector logic
-After training the model with the data for this project, the integration was done through the darknet_ros package and some simple logic in `tl_detector.py`.
+* Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
+* If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
+  * 2 CPU
+  * 2 GB system memory
+  * 25 GB of free hard drive space
 
-darknet_ros already has a ROS action server implemented.
-In `tl_detector.py`, we implemented an action client.
-Each time an image was received, a Action Goal containing that image was sent to darknet_ros.
-The response was a Action Result containing the object detections.
+* Follow these instructions to install ROS
+  * [ROS Kinetic](http://wiki.ros.org/kinetic/Installation/Ubuntu) if you have Ubuntu 16.04.
+  * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu) if you have Ubuntu 14.04.
+* [Dataspeed DBW](https://bitbucket.org/DataspeedInc/dbw_mkz_ros)
+  * Use this option to install the SDK on a workstation that already has ROS installed:[One Line SDK Install (binary)](https://bitbucket.org/DataspeedInc/dbw_mkz_ros/src/81e63fcc335d7b64139d7482017d6a97b405e250/ROS_SETUP.md?fileviewer=file-view-default)
+* Download the [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases).
 
-Since multiple traffic lights could be detected, the final state was given by the traffic light state that was most prevalent.
-For example, if 2 red lights and 1 yellow were detected, the final state would be corresponding to the red light.
-This logic worked well.
-Videos of the performance can be seen in the Results section.
+## Usage<a id="sec-5"></a>
 
-### End to End Classification using Tensorflow
+1. Make a project directory `mkdir project_udacity && cd project_udacity`
+2. Clone this repository into the project_udacity directory. `https://github.com/nutmas/CarND-Capstone.git`
+3. Install python dependencies. `cd CarND-Capstone-Project\` and `pip install -r requirements.txt` will install dependencies.
+4. Build code. `cd ros\` and `catkin_make` and `source devel/setup.sh`
+5. Create a directory for simulator `cd` and 'mkdir Sim` and `cd Sim`
+6. Download Simulator from here: [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases)
+7. Run the simulator `cd linux_sys_int` and `./sys_int.x86_64` (for linux 64bit system)
 
-#### Development Overview 
+![alt text][image2]
+
+
+8. Launch the code. `cd CarND-Capstone-Project\ros\` and `roslaunch launch\styx.launch`
+
+![alt text][image3]
+
+9. Clicking the `Camera` checkbox in the simulator will ready the car for autonomous mode. The green planned path with appear.
+
+![alt text][image4]
+
+10. Now the vehicle is ready to drive autonomously around the track. Click the `Manual` checkbox and the vehicle will start to drive.
+
+
+## Traffic Light Detection and Classification End-to-End Approach using Tensorflow<a id="sec-6"></a>
+
+#### Development Overview<a id="sec-6-1"></a>
 
 An end-to-end approach in the traffic light detection context equates to passing the classifier an image; it then identifies the location in the scene
 and also categorises the traffic light state as RED, YELLOW or GREEN.
@@ -102,7 +127,7 @@ The following process was utilised to retrain the models to enable them to class
     - In Parallel to classification thread, the [`tl_detector.py`](https://github.com/nutmas/CapstoneProject-AutoWheels/blob/TensorBranch/ros/src/tl_detector/tl_detector.py)function `run_main()` continuously calculates the nearest traffic light based on current pose, to understand the distance to next stop line. When a position and classification are aligned, the node will only output a waypoint representing distance to stop line, if the traffic light is RED or YELLOW.
     - The [`waypoint_updater.py`](https://github.com/nutmas/CapstoneProject-AutoWheels/blob/TensorBranch/ros/src/waypoint_updater/waypoint_updater.py) receives the stop line waypoint and will control the vehicle to bring it to a stop at the stop line position. Once a green light is present the waypoint is removed and the vehicle accelerates to the set speed.
 
-#### Performance Evaluation 
+#### Performance Evaluation<a id="sec-6-2"></a>
 
 - Inception v1 model has lower accuracy but runs faster producing results of ~330ms per classification (On 1050Ti GPU). However this required more classification outputs to establish a confirmed traffic light state.
 - Inception v2 model has very high accuracy but runs much slower ~1.5secs per classification (On 1050Ti GPU). This can work on a single state result.
@@ -117,41 +142,21 @@ The v1 and v2 inception models are similar size once frozen (52MB vs 55MB). Howe
 No real world data training or testing was performed on the classifier yet; it was therefore judged by the team that the YOLO classifier with Darknet would be more suitable for the submission.
 To take this end-to-end classifier forwards it would need retraining on the real world data and have a switch in the launch file to select real world or simulator world models.
 
-## Self Driving Car Control
+#### PID Tuning Parameters<a id="sec-6-3"></a>
 
-A lot of the control and waypoint following for our self-driving car was re-used from the walk-through code. The walk-through provided a great starting point. That being said, there were some key changes that improved performance that are worth highlighting below.
+**The final values of PID controller for end-to-end Tensorflow model were the following: (KP = 0.25, KI = 0.0, KD = 0.15, MN = 0.0, MX = 0.5).**
 
-* Update the waypoint follower so that the `PurePursuit::verifyFollowing()` always returned false. This helped prevent the car from wandering in the lane. This is because previously the function calculated if the car was "close enough" to the waypoints in which case it would follow the previous control inputs resulting. This change made the car always follow the most recent inputs.
 
-* Updated the waypoint updater `decelerate_waypoints()` function so that it accepted the stop waypoint index as an argument. This prevented the waypoint node from crashing randomly due to an edge case where the code passed the `stop_wp_idx_temp >= farthest_idx` check in generate lane and then received a /traffic_waypoint update in the middle of calculating the deceleration waypoints resulting in an out of bounds exception at the worst. At the best it resulted in decelerion waypoints calculated using multiple stop locations.
+## Results<a id="sec-7"></a>
 
-* Updated the twist controller steering PID parameters to improve performance around the curves. **The final values of PID controller for end-to-end Tensorflow model were the following: (KP = 0.25, KI = 0.0, KD = 0.15, MN = 0.0, MX = 0.5).**
+This repo shows the Tensorflow classifier implementation. This has not been classified for real world traffic lights. This model will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end Classifier. The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva
 
-* Updated the total vehicle mass calculation in the twist controller to include the mass contributed by the current fuel levels. While this was impossible to test in simulation it should help provide more accurate braking torques when decelerating the vehicle on the track.
+**This [Video](https://www.youtube.com/watch?v=HVy0eSQZLXA) shows the end-to-end net in operation while the vehicle navigates around the simulator track.**
 
-* Changed the idle vehicle stop brake torque within twist controller to a ros server param `~stop_brake_torque`. This allowed us to more easily adjusted the Nm torque applied in simulation and real life to 400 Nm and 700 Nm respectively.
 
-### Simulation Inconsistency
+## License<a id="sec-8"></a>
 
-Our team struggled a lot with reproducing controller results in simulation. This is because the Udacity workspace's, the VMs and our personal machines all had different performance specs. If the machine ran slower for any period of time the car would stop following the waypoints and drive out of bounds. This was especially prevalent in the Udacity workspace environemnt. These students experienced similar issues [here](https://knowledge.udacity.com/questions/39086).
+For License information please see the [LICENSE](./LICENSE) file for details
 
-## Results
-The performance of solution in one lap of the simulator was recorded and published on Youtube (https://youtu.be/p0Jgx_Gc7sg).
-The video was accelerated 3x.
-YOLO was trained on around 4000 images for 7000 epochs.
-The same model was tested on track images. A video was recorded and published on Youtube (https://youtu.be/Cov7dlHjFko).
-
-## References
-
-#### Links
-* [LabelImg](https://github.com/tzutalin/labelImg)
-* [OpenCV Traffic Light Detection Blog](https://qtmbits.com/traffic-light-classifier-using-python-and-opencv/)
-* [Yolo_mark](https://github.com/AlexeyAB/Yolo_mark)
-* [Preparing dataset for YOLO Blog](https://medium.com/@manivannan_data/how-to-train-yolov3-to-detect-custom-objects-ccbcafeb13d2)
-* [darknet_ros](https://github.com/leggedrobotics/darknet_ros)
-
-#### Article Citations
-Redmon, J. and Farhadi, A., 2018. Yolov3: An incremental improvement. arXiv preprint arXiv:1804.02767. [YOLOv3 article](https://pjreddie.com/media/files/papers/YOLOv3.pdf)
-
-Bradski, G., The OpenCV Library. Dr. Dobb's Journal of Software Tools , (2000). [OpenCV](https://opencv.org/)
+---
 
