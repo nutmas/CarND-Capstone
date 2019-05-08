@@ -12,7 +12,7 @@ Andreea Patachi | patachiandreea@yahoo.com | @Andreea
 Stephen Nutman | stephen_nutman@outlook.com | @Steve
 Alexander Meade | alexander.n.meade@gmail.com | @ameade 
 
-** This repo shows the Tensorflow classifier implementation and has not been classified for real world traffic lights. The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva **
+**This repo shows the Tensorflow classifier implementation and has not been classified for real world traffic lights. The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva**
 
 ## Traffic Light Detection and Classification
 
