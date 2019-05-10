@@ -34,7 +34,7 @@ Team Member Name | Email Address | Slack Handle
 Diogo Silva (Team Lead) | akins.daos+selfdriving@gmail.com | @diogoaos
 Volker van Aken | volker.van.aken@gmail.com | @Volker
 Andreea Patachi | patachiandreea@yahoo.com | @Andreea	
-Stephen Nutman | stephen_nutman@outlook.com | @Steve
+Stephen Nutman | stephen.nutman@ntc-europe.co.uk | @Steve
 Alexander Meade | alexander.n.meade@gmail.com | @ameade
 
 ## Overview<a id="sec-2"></a>
