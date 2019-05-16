@@ -11,7 +11,6 @@
 [image4]: ./support/FullyRunning.png "Fully Running"
 
 
-- [Team: Autowheels](#sec-1)
 - [Overview](#sec-2)
 - [System Architecture](#sec-3)
 - [Installation steps](#sec-4)
@@ -24,18 +23,6 @@
 - [License](#sec-8)
 
 ---
-
-## Meet Team AutoWheels<a id="sec-1"></a>
-Team AutoWheels has five members. Below are their names, email addresses and slack handles.
-
-
-Team Member Name | Email Address | Slack Handle 
------------- | ------------- | -------------
-Diogo Silva (Team Lead) | akins.daos+selfdriving@gmail.com | @diogoaos
-Volker van Aken | volker.van.aken@gmail.com | @Volker
-Andreea Patachi | patachiandreea@yahoo.com | @Andreea	
-Stephen Nutman | stephen.nutman@ntc-europe.co.uk | @Steve
-Alexander Meade | alexander.n.meade@gmail.com | @ameade
 
 ## Overview<a id="sec-2"></a>
 
@@ -139,7 +126,7 @@ The following process was utilised to retrain the models to enable them to class
     
 #### Conclusion for end-to-end classifier
 The v1 and v2 inception models are similar size once frozen (52MB vs 55MB). However the model which ran for 10x more epoch is significantly slower but has a much higher reliability for classification. The v2 model was chosen as it could perform to the meet the requirement of the simulator track.
-No real world data training or testing was performed on the classifier yet; it was therefore judged by the team that the YOLO classifier with Darknet would be more suitable for the submission.
+No real world data training or testing was performed on the classifier yet;
 To take this end-to-end classifier forwards it would need retraining on the real world data and have a switch in the launch file to select real world or simulator world models.
 
 #### PID Tuning Parameters<a id="sec-6-3"></a>
@@ -150,7 +137,6 @@ To take this end-to-end classifier forwards it would need retraining on the real
 ## Results<a id="sec-7"></a>
 
 This repo shows the Tensorflow traffic light classifier implementation. This has model not been trained for real world traffic lights; It will successfully navigate the simulator track using the RCNN Inception Net as the end-to-end traffic light Classifier.  
-The integration of the classifiers with the control is aligned so that the classifiers can be exchanged with minimal code modification. The actual submission for Real World evaluation with YOLO classifier is submitted by Team Lead Diogo Silva
 
 **This [Video](https://www.youtube.com/watch?v=HVy0eSQZLXA) shows the end-to-end net in operation while the vehicle navigates around the simulator track.**
 
